@@ -1,0 +1,28 @@
+{
+  "type": "module",
+  "name": "@arbendium/zip",
+  "version": "0.1.0",
+  "description": "A zipping library based on yazl+yuazl",
+  "author": "Keijo Kapp <keijo.kapp@gmail.com>",
+  "repository": "github:arbendium/zip",
+  "license": "ISC",
+  "exports": {
+    "./constants": "./lib/constants.js",
+    "./cp437": "./lib/cp437.js",
+    "./read": "./lib/zip.js",
+    "./unzip": "./lib/unzip.js",
+    "./write": "./lib/write.js",
+    "./zip": "./lib/zip.js"
+  },
+  "files": ["lib"],
+  "scripts": {
+    "lint": "eslint lib test *.js",
+    "test": "node --test",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@arbendium/eslint-config-base": "^0.2.2",
+    "@types/node": "^22.5.4",
+    "eslint": "^8.57.0"
+  }
+}
