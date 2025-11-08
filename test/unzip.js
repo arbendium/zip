@@ -41,9 +41,9 @@ async function assertZip(file, entries) {
 	assert.deepStrictEqual(actualEntries, entries);
 	assert.deepStrictEqual(
 		await Promise.all(streamFactories.map(
-			async createReadStream => streamChecksum(await createReadStream())
+			async createReadStream => streamChecksum(await createReadStream()),
 		)),
-		entries.map(entry => entry.centralDirectoryFileHeader.crc32)
+		entries.map(entry => entry.centralDirectoryFileHeader.crc32),
 	);
 }
 
@@ -75,9 +75,9 @@ test('simple', async () => {
 					fileName: Buffer.from('test.txt'),
 					extraFields: [
 						{ id: 21589, data: Buffer.from([3, 69, 23, 206, 102]) },
-						{ id: 30837, data: Buffer.from([1, 4, 232, 3, 0, 0, 4, 232, 3, 0, 0]) }
+						{ id: 30837, data: Buffer.from([1, 4, 232, 3, 0, 0, 4, 232, 3, 0, 0]) },
 					],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'test.txt',
 				comment: '',
@@ -87,8 +87,8 @@ test('simple', async () => {
 				relativeOffsetOfLocalHeader: 0n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: false
-			}
+				compressed: false,
+			},
 		]);
 	} finally {
 		handle.close();
@@ -122,9 +122,9 @@ test('simple buffer', async () => {
 				fileName: Buffer.from('test.txt'),
 				extraFields: [
 					{ id: 21589, data: Buffer.from([3, 69, 23, 206, 102]) },
-					{ id: 30837, data: Buffer.from([1, 4, 232, 3, 0, 0, 4, 232, 3, 0, 0]) }
+					{ id: 30837, data: Buffer.from([1, 4, 232, 3, 0, 0, 4, 232, 3, 0, 0]) },
 				],
-				comment: Buffer.allocUnsafe(0)
+				comment: Buffer.allocUnsafe(0),
 			},
 			fileName: 'test.txt',
 			comment: '',
@@ -134,8 +134,8 @@ test('simple buffer', async () => {
 			relativeOffsetOfLocalHeader: 0n,
 			diskNumberStart: 0,
 			encrypted: false,
-			compressed: false
-		}
+			compressed: false,
+		},
 	]);
 });
 
@@ -166,7 +166,7 @@ test('infozip-zip64-streamed', async () => {
 					relativeOffsetOfLocalHeader: 0,
 					fileName: Buffer.from([0x2d]),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: '-',
 				comment: '',
@@ -176,8 +176,8 @@ test('infozip-zip64-streamed', async () => {
 				relativeOffsetOfLocalHeader: 0n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
-			}
+				compressed: true,
+			},
 		]);
 	} finally {
 		handle.close();
@@ -211,7 +211,7 @@ test('musescore', async () => {
 					relativeOffsetOfLocalHeader: 0,
 					fileName: Buffer.from('c2NvcmVfc3R5bGUubXNz', 'base64'),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'score_style.mss',
 				comment: '',
@@ -221,7 +221,7 @@ test('musescore', async () => {
 				relativeOffsetOfLocalHeader: 0n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
+				compressed: true,
 			},
 			{
 				centralDirectoryFileHeader: {
@@ -243,7 +243,7 @@ test('musescore', async () => {
 					relativeOffsetOfLocalHeader: 10840,
 					fileName: Buffer.from('VGFhdmV0aSBsYXVsIDE0MSAtIEN5cmlsbHVzIEtyZWVrLm1zY3g=', 'base64'),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'Taaveti laul 141 - Cyrillus Kreek.mscx',
 				comment: '',
@@ -253,7 +253,7 @@ test('musescore', async () => {
 				relativeOffsetOfLocalHeader: 10840n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
+				compressed: true,
 			},
 			{
 				centralDirectoryFileHeader: {
@@ -275,7 +275,7 @@ test('musescore', async () => {
 					relativeOffsetOfLocalHeader: 29514,
 					fileName: Buffer.from('VGh1bWJuYWlscy90aHVtYm5haWwucG5n', 'base64'),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'Thumbnails/thumbnail.png',
 				comment: '',
@@ -285,7 +285,7 @@ test('musescore', async () => {
 				relativeOffsetOfLocalHeader: 29514n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
+				compressed: true,
 			},
 			{
 				centralDirectoryFileHeader: {
@@ -307,7 +307,7 @@ test('musescore', async () => {
 					relativeOffsetOfLocalHeader: 49935,
 					fileName: Buffer.from('YXVkaW9zZXR0aW5ncy5qc29u', 'base64'),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'audiosettings.json',
 				comment: '',
@@ -317,7 +317,7 @@ test('musescore', async () => {
 				relativeOffsetOfLocalHeader: 49935n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
+				compressed: true,
 			},
 			{
 				centralDirectoryFileHeader: {
@@ -339,7 +339,7 @@ test('musescore', async () => {
 					relativeOffsetOfLocalHeader: 50669,
 					fileName: Buffer.from('dmlld3NldHRpbmdzLmpzb24=', 'base64'),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'viewsettings.json',
 				comment: '',
@@ -349,7 +349,7 @@ test('musescore', async () => {
 				relativeOffsetOfLocalHeader: 50669n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
+				compressed: true,
 			},
 			{
 				centralDirectoryFileHeader: {
@@ -371,7 +371,7 @@ test('musescore', async () => {
 					relativeOffsetOfLocalHeader: 50761,
 					fileName: Buffer.from('TUVUQS1JTkYvY29udGFpbmVyLnhtbA==', 'base64'),
 					extraFields: [],
-					comment: Buffer.allocUnsafe(0)
+					comment: Buffer.allocUnsafe(0),
 				},
 				fileName: 'META-INF/container.xml',
 				comment: '',
@@ -381,8 +381,8 @@ test('musescore', async () => {
 				relativeOffsetOfLocalHeader: 50761n,
 				diskNumberStart: 0,
 				encrypted: false,
-				compressed: true
-			}
+				compressed: true,
+			},
 		]);
 	} finally {
 		handle.close();

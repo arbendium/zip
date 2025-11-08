@@ -6,6 +6,6 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "noEmit": true,
-    "strict": true
+    "strict": true,
   }
 }

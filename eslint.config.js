@@ -5,7 +5,7 @@ export default [
 	{
 		files: ['eslint.config.js'],
 		rules: {
-			'import/no-extraneous-dependencies': ['error', { devDependencies: true }]
-		}
-	}
+			'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+		},
+	},
 ];
