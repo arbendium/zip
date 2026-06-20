@@ -8,10 +8,15 @@ import url from 'node:url';
 import { crc32 } from 'node:zlib';
 import { fromBuffer, fromFileHandle } from '../lib/unzip.js';
 
+/**
+ * @import { Readable } from 'node:stream'
+ * @import { Entry, default as Unzip } from '../lib/unzip.js'
+ */
+
 const directoryName = path.dirname(url.fileURLToPath(import.meta.url));
 
 /**
- * @param {import('node:stream').Readable} stream
+ * @param {Readable} stream
  * @returns {Promise<number>}
  */
 async function streamChecksum(stream) {
@@ -25,11 +30,11 @@ async function streamChecksum(stream) {
 }
 
 /**
- * @param {import('../lib/unzip.js').default} file
- * @param {import('../lib/unzip.js').Entry[]} entries
+ * @param {Unzip} file
+ * @param {Entry[]} entries
  */
 async function assertZip(file, entries) {
-	/** @type {import('../lib/unzip.js').Entry[]} */
+	/** @type {Entry[]} */
 	const actualEntries = [];
 	const streamFactories = [];
 

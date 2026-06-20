@@ -42,10 +42,10 @@ export interface CentralDirectoryFileHeader {
 	comment: Buffer // `k` bytes @46+n+m
 }
 
-export interface Entry {
+export interface Entry<Stringish extends string | Buffer = string | Buffer> {
 	centralDirectoryFileHeader: CentralDirectoryFileHeader
-	fileName: Buffer | string
-	comment: Buffer | string
+	fileName: Stringish
+	comment: Stringish
 	compressed: boolean | undefined
 	encrypted: boolean
 	modificationDate: Date
@@ -67,14 +67,20 @@ export interface UnzipEntryOptions {
 	validateData?: boolean
 }
 
-export default class Unzip {
+export default class Unzip<Stringish extends string | Buffer = string | Buffer> {
 	handle: FileHandle
 	centralDirectoryOffset: bigint
 	fileSize: bigint
 	entryCount: bigint
-	comment: string | Buffer
-	entries(options?: { decodeStrings?: boolean }): AsyncIterable<[Entry, (options?: UnzipEntryOptions) => Promise<Readable>]>
+	comment: Stringish
+	entries(options?: { decodeStrings?: true }): AsyncIterable<[Entry<string>, (options?: UnzipEntryOptions) => Promise<Readable>]>
+	entries(options?: { decodeStrings: false }): AsyncIterable<[Entry<Buffer>, (options?: UnzipEntryOptions) => Promise<Readable>]>
+	entries(options?: { decodeStrings?: boolean }): AsyncIterable<[Entry<Buffer | string>, (options?: UnzipEntryOptions) => Promise<Readable>]>
 }
 
-export function fromBuffer(buffer: Buffer, options?: UnzipOptions): Unzip
-export function fromFileHandle(buffer: FileHandle, options?: UnzipOptions): Unzip
+export function fromBuffer(buffer: Buffer, options?: { decodeStrings?: true }): Unzip<string>
+export function fromBuffer(buffer: Buffer, options: { decodeStrings: false }): Unzip<Buffer>
+export function fromBuffer(buffer: Buffer, options?: UnzipOptions): Unzip<string | Buffer>
+export function fromFileHandle(buffer: FileHandle, options?: { decodeStrings?: true }): Unzip<string>
+export function fromFileHandle(buffer: FileHandle, options?: { decodeSTrings: false }): Unzip<Buffer>
+export function fromFileHandle(buffer: FileHandle, options?: UnzipOptions): Unzip<string | Buffer>

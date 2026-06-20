@@ -9,10 +9,14 @@ import { crc32 } from 'node:zlib';
 import { fromFileHandle } from '../lib/unzip.js';
 import Zip from '../lib/zip.js';
 
+/**
+ * @import { Readable } from 'node:stream'
+ */
+
 const directoryName = path.dirname(url.fileURLToPath(import.meta.url));
 
 /**
- * @param {import('node:stream').Readable} stream
+ * @param {Readable} stream
  * @returns {Promise<number>}
  */
 async function streamChecksum(stream) {

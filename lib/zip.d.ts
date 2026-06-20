@@ -1,5 +1,6 @@
 import type { FileHandle } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
+import type { Entry as UnzipEntry } from './unzip.js'
 
 export interface Entry {
 	fileName: Buffer
@@ -19,7 +20,7 @@ export interface Entry {
 export default class Zip extends Readable {
 	constructor(options?: { cursor?: bigint })
 	addEntry(
-		entry: import('./unzip.js').Entry,
+		entry: UnzipEntry,
 		createReadStream?: (options: { decompress: false }) => Promise<Readable>,
 		options?: {
 		  fileName?: Buffer | string
