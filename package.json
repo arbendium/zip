@@ -16,13 +16,13 @@
   },
   "files": ["lib"],
   "scripts": {
-    "lint": "eslint lib test *.js",
+    "lint": "eslint analyze lib test *.js",
     "test": "node --test",
     "typecheck": "tsc"
   },
   "devDependencies": {
     "@arbendium/eslint-config-base": "^2.2.0",
-    "@types/node": "^24.10.0",
-    "eslint": "^9.39.1"
+    "@types/node": "^26.0.0",
+    "eslint": "^9.39.3"
   }
 }

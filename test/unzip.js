@@ -4,7 +4,6 @@ import assert from 'node:assert';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
-import url from 'node:url';
 import { crc32 } from 'node:zlib';
 import { fromBuffer, fromFileHandle } from '../lib/unzip.js';
 
@@ -12,8 +11,6 @@ import { fromBuffer, fromFileHandle } from '../lib/unzip.js';
  * @import { Readable } from 'node:stream'
  * @import { Entry, default as Unzip } from '../lib/unzip.js'
  */
-
-const directoryName = path.dirname(url.fileURLToPath(import.meta.url));
 
 /**
  * @param {Readable} stream
@@ -53,7 +50,7 @@ async function assertZip(file, entries) {
 }
 
 test('simple', async () => {
-	const handle = await fs.open(path.resolve(directoryName, '..', 'fixtures', 'simple.zip'), 'r');
+	const handle = await fs.open(path.resolve(import.meta.dirname, '..', 'fixtures', 'simple.zip'), 'r');
 
 	try {
 		const file = await fromFileHandle(handle);
@@ -101,7 +98,7 @@ test('simple', async () => {
 });
 
 test('simple buffer', async () => {
-	const handle = await fs.readFile(path.resolve(directoryName, '..', 'fixtures', 'simple.zip'));
+	const handle = await fs.readFile(path.resolve(import.meta.dirname, '..', 'fixtures', 'simple.zip'));
 
 	const file = await fromBuffer(handle);
 
@@ -145,7 +142,7 @@ test('simple buffer', async () => {
 });
 
 test('infozip-zip64-streamed', async () => {
-	const handle = await fs.open(path.resolve(directoryName, '..', 'fixtures', 'infozip-zip64-streamed.zip'), 'r');
+	const handle = await fs.open(path.resolve(import.meta.dirname, '..', 'fixtures', 'infozip-zip64-streamed.zip'), 'r');
 
 	try {
 		const file = await fromFileHandle(handle);
@@ -190,7 +187,7 @@ test('infozip-zip64-streamed', async () => {
 });
 
 test('musescore', async () => {
-	const handle = await fs.open(path.resolve(directoryName, '..', 'fixtures', 'musescore.zip'), 'r');
+	const handle = await fs.open(path.resolve(import.meta.dirname, '..', 'fixtures', 'musescore.zip'), 'r');
 
 	try {
 		const file = await fromFileHandle(handle);
