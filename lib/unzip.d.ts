@@ -67,20 +67,29 @@ export interface UnzipEntryOptions {
 	validateData?: boolean
 }
 
-export default class Unzip<Stringish extends string | Buffer = string | Buffer> {
-	handle: FileHandle
+export default class Unzip<Handle = Buffer | FileHandle, Stringish extends string | Buffer = string | Buffer> {
+	handle: Handle
 	centralDirectoryOffset: bigint
 	fileSize: bigint
 	entryCount: bigint
 	comment: Stringish
-	entries(options?: { decodeStrings?: true }): AsyncIterable<[Entry<string>, (options?: UnzipEntryOptions) => Promise<Readable>]>
-	entries(options?: { decodeStrings: false }): AsyncIterable<[Entry<Buffer>, (options?: UnzipEntryOptions) => Promise<Readable>]>
-	entries(options?: { decodeStrings?: boolean }): AsyncIterable<[Entry<Buffer | string>, (options?: UnzipEntryOptions) => Promise<Readable>]>
+	entries(options?: { decodeStrings?: true }):
+		Handle extends Buffer
+			? Iterable<[Entry<string>, (options?: UnzipEntryOptions) => Buffer]>
+			: AsyncIterable<[Entry<string>, (options?: UnzipEntryOptions) => Promise<Readable>]>
+	entries(options?: { decodeStrings: false }):
+			Handle extends Buffer
+				? Iterable<[Entry<Buffer>, (options?: UnzipEntryOptions) => Buffer]>
+				: AsyncIterable<[Entry<Buffer>, (options?: UnzipEntryOptions) => Promise<Readable>]>
+	entries(options?: { decodeStrings?: boolean }):
+		Handle extends Buffer
+			? Iterable<[Entry<Buffer | string>, (options?: UnzipEntryOptions) => Buffer]>
+			: AsyncIterable<[Entry<Buffer | string>, (options?: UnzipEntryOptions) => Promise<Readable>]>
 }
 
-export function fromBuffer(buffer: Buffer, options?: { decodeStrings?: true }): Unzip<string>
-export function fromBuffer(buffer: Buffer, options: { decodeStrings: false }): Unzip<Buffer>
-export function fromBuffer(buffer: Buffer, options?: UnzipOptions): Unzip<string | Buffer>
-export function fromFileHandle(buffer: FileHandle, options?: { decodeStrings?: true }): Unzip<string>
-export function fromFileHandle(buffer: FileHandle, options?: { decodeSTrings: false }): Unzip<Buffer>
-export function fromFileHandle(buffer: FileHandle, options?: UnzipOptions): Unzip<string | Buffer>
+export function fromBuffer(buffer: Buffer, options?: { decodeStrings?: true }): Unzip<Buffer, string>
+export function fromBuffer(buffer: Buffer, options: { decodeStrings: false }): Unzip<Buffer, Buffer>
+export function fromBuffer(buffer: Buffer, options?: UnzipOptions): Unzip<Buffer, string | Buffer>
+export function fromFileHandle(buffer: FileHandle, options?: { decodeStrings?: true }): Unzip<FileHandle, string>
+export function fromFileHandle(buffer: FileHandle, options?: { decodeSTrings: false }): Unzip<FileHandle, Buffer>
+export function fromFileHandle(buffer: FileHandle, options?: UnzipOptions): Unzip<FileHandle, string | Buffer>

@@ -13,13 +13,17 @@ import { fromBuffer, fromFileHandle } from '../lib/unzip.js';
  */
 
 /**
- * @param {Readable} stream
+ * @param {Buffer | Readable} content
  * @returns {Promise<number>}
  */
-async function streamChecksum(stream) {
+async function streamChecksum(content) {
+	if (Buffer.isBuffer(content)) {
+		return crc32(content, 0);
+	}
+
 	let checksum = 0;
 
-	for await (const chunk of stream) {
+	for await (const chunk of content) {
 		checksum = crc32(chunk, checksum);
 	}
 
@@ -33,17 +37,17 @@ async function streamChecksum(stream) {
 async function assertZip(file, entries) {
 	/** @type {Entry[]} */
 	const actualEntries = [];
-	const streamFactories = [];
+	const contentFactories = [];
 
-	for await (const [entry, createReadStream] of file.entries()) {
+	for await (const [entry, getContent] of file.entries()) {
 		actualEntries.push(entry);
-		streamFactories.push(createReadStream);
+		contentFactories.push(getContent);
 	}
 
 	assert.deepStrictEqual(actualEntries, entries);
 	assert.deepStrictEqual(
-		await Promise.all(streamFactories.map(
-			async createReadStream => streamChecksum(await createReadStream()),
+		await Promise.all(contentFactories.map(
+			async getContent => streamChecksum(await getContent()),
 		)),
 		entries.map(entry => entry.centralDirectoryFileHeader.crc32),
 	);
