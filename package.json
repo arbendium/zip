@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@arbendium/zip",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A zipping library based on yazl+yuazl",
   "author": "Keijo Kapp <keijo.kapp@gmail.com>",
   "repository": "github:arbendium/zip",
